@@ -1,35 +1,22 @@
-"""
-Authentication Controller
-
-This module defines routes and functions for handling user authentication,
-including login, registration, logout, and Google OAuth.
-
-Blueprint:
-    - auth_bp: Blueprint for all authentication-related routes.
-
-Endpoints:
-    - /auth/sign-in: Renders the login page.
-    - /auth/register: Registers a new user and logs them in.
-    - /auth/login: Authenticates a user and saves their session data.
-    - /auth/logout: Logs out the user and clears their session.
-    - /auth/google: Redirects to Google OAuth URL.
-    - /auth/google/callback: Handles Google OAuth callback and processes token exchange.
-
-Helper Functions:
-    - save_profile_data: Saves the access token, refresh token, and user profile data to the session.
-    - get_valid_access_token: Returns a valid access token, refreshing it if expired.
-"""
-
-from flask import Blueprint, request, jsonify, redirect, render_template, session, url_for
-from connection.api_connection import register_user, login_user, get_google_auth_url, exchange_google_code, get_access_token, revoke_refresh_token
+from flask import Blueprint, request, jsonify, redirect, render_template, session, url_for, flash
+from api_connection.auth_request import AuthConnection
+from decorators.auth_decorators import anonymous_required 
 from datetime import datetime, timedelta
 import requests
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/auth/sign-in')
+auth = AuthConnection()
+
+@auth_bp.route('/auth/login_page')
+@anonymous_required
 def sign_in_page():
     return render_template('login.html')
+
+@auth_bp.route('/auth/register_page')
+@anonymous_required
+def register_page():
+    return render_template('register.html')
 
 @auth_bp.route('/auth/register', methods=['POST'])
 def register():
@@ -48,7 +35,7 @@ def register():
     email = data['email']
     password = data['password']  
 
-    response = register_user({'email': email, 'password': password})
+    response = auth.register_user({'email': email, 'password': password})
 
     if response.status_code == 201:
 
@@ -80,7 +67,7 @@ def login():
     email = data['email']
     password = data['password']  
 
-    response = login_user({'email': email, 'password': password})
+    response = auth.login_user({'email': email, 'password': password})
 
     if response.status_code == 200:
         save_profile_data(data)         
@@ -90,6 +77,7 @@ def login():
 
 
 @auth_bp.route('/auth/google', methods=['GET'])
+@anonymous_required
 def auth_google():
     """
     Redirects to Google OAuth authentication URL.
@@ -97,12 +85,11 @@ def auth_google():
     Returns:
         Response: Redirect to Google authentication URL.
     """
-
-    google_url = get_google_auth_url()    
+    google_url = auth.get_google_auth_url()    
     return redirect(google_url.json()["google_auth_url"]) 
 
-
 @auth_bp.route('/auth/google/callback', methods=['GET'])
+@anonymous_required
 def google_callback():
     """
     Handles Google OAuth callback and exchanges code for tokens.
@@ -119,7 +106,7 @@ def google_callback():
     # Ensure that the authorization code is present in the response.
     if not code: return "Authorization failed. No code provided.", 400
     # Request to the API to exchange the code for the access token.
-    response = exchange_google_code(code) 
+    response = auth.exchange_for_token(code) 
     if response.status_code == 200:
         data = response.json() 
         save_profile_data(data)
@@ -127,7 +114,6 @@ def google_callback():
         return redirect(url_for('dashboard')) 
     
     return "Authentication failed. Please try again.", 400
-
 
 @auth_bp.route('/auth/logout', methods=['POST'])
 def logout():
@@ -138,11 +124,10 @@ def logout():
         Response: JSON response with a success or failure message and HTTP status code.
     """
     access_token = get_valid_access_token()
-    response = revoke_refresh_token(access_token)
+    response = auth.revoke_refresh_token(access_token)
     if response.status_code == 200: 
         session.clear()
         return jsonify({'message': 'Login successful'}), response.status_code   
-
 
 def save_profile_data(data):
     """
@@ -159,40 +144,46 @@ def save_profile_data(data):
     session["refresh_token"] = data.get("refresh_token")
     session["user"] = data.get("user")
 
-
 def get_valid_access_token():
     """
     Retrieves a valid access token from session, refreshing it if expired.
 
     Returns:
-        str: Valid access token for the user.
+        str: Valid access token for the user or None if unavailable.
     """
 
     access_token = session.get('access_token')
     access_token_expires = session.get('access_token_expires')
-    
+
+    # Ensure access_token_expires has a valid value
+    if not access_token_expires:
+        return None
+
     # Transform the expiration time into a datetime object
-    access_token_expires = datetime.fromisoformat(access_token_expires)
-    
-    # Check if the token has expired.
+    try:
+        access_token_expires = datetime.fromisoformat(access_token_expires)
+    except ValueError:
+        return None  # Return None if access_token_expires is not a valid ISO format
+
+    # Check if the token has expired
     if datetime.now() >= access_token_expires:
         refresh_token = session.get('refresh_token')
 
-        if not refresh_token: return None
+        if not refresh_token:
+            return None
 
-        response = get_access_token(refresh_token)
+        response = auth.refresh_access_token(refresh_token)
         
-        if response.status_code != 200:  
+        if response.status_code != 200:
             return jsonify({'error': 'Failed to refresh token'}), response.status_code
-        else:            
+        else:
             data = response.json()
             new_access_token = data.get("access_token")
             
-            # Update the session with the new access token and its expiration time.
+            # Update the session with the new access token and its expiration time
             session['access_token'] = new_access_token
             session['access_token_expires'] = (datetime.now() + timedelta(minutes=30)).isoformat()
             
             access_token = new_access_token
 
     return access_token       
-

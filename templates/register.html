@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <script>
-        async function handleLogin(event) {
+        async function handleRegister(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            const response = await fetch('/auth/login', {
+            const response = await fetch('/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),                
@@ -40,18 +40,19 @@
             {% endfor %}
             </div>
         {% endif %}
-    {% endwith %}
-    <button onclick="handleGoogleLogin()">Sing up with Google</button>
+    {% endwith %}    
+    <button onclick="handleGoogleLogin()">Continue with Google</button>
     <br>
-    <form onsubmit="handleLogin(event)">
+    <form onsubmit="handleRegister(event)">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
+
     </form>
-    <div class="register">
-        <p>Don't have an account? <a href="/auth/register_page">Sign up for PlaylistBridge</a></p>
+    <div class="login-link">
+        <p>Already have an account? <a href="/auth/login_page">Log in here.</a></p>        
     </div>
 </body>
 </html>

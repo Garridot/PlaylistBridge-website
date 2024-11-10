@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, url_for
+from flask import Flask, flash,request, jsonify, redirect, url_for, session, render_template
 from controllers.auth_controller import auth_bp, get_valid_access_token
 from config import Config
 
@@ -24,17 +24,27 @@ def create_app():
     @app.before_request
     def check_access_token():
         """
-        Verify the token for each request, particularly on protected routes. If the access token is invalid, redirect the user to the login page.
+        Verify the token for each request, particularly on protected routes. 
+        If the access token is invalid, redirect the user to the login page.
         """
-        if request.endpoint is not None and 'auth' in request.endpoint:  # ignore authentication routes.
+        # ignore authentication routes.
+        if request.endpoint is not None and 'auth' in request.endpoint:  
             return
         
-        if not get_valid_access_token():  
-            return redirect(url_for('auth.sign_in_page'))  
+        # Check if the user has a valid access token
+        if not get_valid_access_token():
+            if session.get("user") is None:
+                # User has never authenticated or has logged out
+                flash("To view this content, you need to authenticate first.")
+            else:
+                # User was authenticated, but the token has expired
+                flash("Your authentication has expired. Please sign in again.")
+            
+            return redirect(url_for('auth.sign_in_page')) 
 
     @app.route('/dashboard')
     def dashboard():
-        return jsonify({"message": "Welcome to the dashboard!"} )              
+        return render_template("dashboard.html")              
     
     return app
 
