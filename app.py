@@ -1,6 +1,7 @@
 from flask import Flask, flash,request, jsonify, redirect, url_for, session, render_template
 from controllers.auth_controller import auth_bp, get_valid_access_token
 from controllers.spotify_controller import spotify_bp
+from controllers.youtube_controller import youtube_bp
 from config import Config
 
 def create_app():
@@ -22,6 +23,7 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(spotify_bp, url_prefix='/spotify')
+    app.register_blueprint(youtube_bp, url_prefix='/youtube')
 
     @app.before_request
     def check_access_token():
