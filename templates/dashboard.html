@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    ul {
+        list-style: none;        
+    }
+    li {
+        cursor: pointer;
+        margin: 1rem 0;
+    }
+
+</style>
 <body>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -16,6 +30,11 @@
             </div>
         {% endif %}
     {% endwith %}
-    <h1>Welcome to the dashboard!</h1>    
+    <h1>Welcome to the dashboard!</h1>  
+    <div class="grid container">
+        <div class="sp-box"></div>
+        <div class="yt-box"></div>
+    </div>  
 </body>
+<script src="/static/js/spotify_fetch.js"></script>
 </html>

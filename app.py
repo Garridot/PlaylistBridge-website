@@ -1,5 +1,6 @@
 from flask import Flask, flash,request, jsonify, redirect, url_for, session, render_template
 from controllers.auth_controller import auth_bp, get_valid_access_token
+from controllers.spotify_controller import spotify_bp
 from config import Config
 
 def create_app():
@@ -20,6 +21,7 @@ def create_app():
     app.config.from_object(Config)  # load the configuration from config.py.
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(spotify_bp, url_prefix='/spotify')
 
     @app.before_request
     def check_access_token():
@@ -43,7 +45,7 @@ def create_app():
             return redirect(url_for('auth.sign_in_page')) 
 
     @app.route('/dashboard')
-    def dashboard():
+    def dashboard():       
         return render_template("dashboard.html")              
     
     return app
