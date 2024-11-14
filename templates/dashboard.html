@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
+{% extends "base.html" %}
+{% block title %}Home - My Flask App{% endblock %}
+{% block content %}
+
+<style>    
     .grid.container {
         display: flex;
         justify-content: space-between;
@@ -24,22 +16,20 @@
     }
 
 </style>
-<body>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="flash-messages">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-            </div>
-        {% endif %}
+    {% if messages %}
+        <div class="flash-messages">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
     {% endwith %}
     <h1>Welcome to the dashboard!</h1>  
     <div class="grid container">
         <div class="sp-box"></div>
         <div class="yt-box"></div>
     </div>  
-</body>
-<script src="/static/js/spotify_fetch.js"></script>
-<script src="/static/js/youtube_fetch.js"></script>
-</html>
+    
+    <script type="module" src="/static/js/home.js"></script>
+{% endblock %}
