@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'SpotifyMix-Medium';
+    src: url('/static/fonts/SpotifyMix/SpotifyMix-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color-text: #ffffff;
+    --color-text-2: #adadad;   
+    --color-background: #000000;
+    --color-background-container: #121212; 
+    --color-highlighted: #a31f0e;         
+    --color-border: #2a2a2a;
+}
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #7c7c7c7e;
+}
+
+
+h1, h2, h3, h4, h5, h6, p, a, label, input, span  {
+    font-family: 'SpotifyMix-Medium', sans-serif;    
+}
+h2, h3, h4, h5, h6, p, a, label, input {    
+    font-weight: 100;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text);
+}     
+
+body {
+    background: #000000;
+    color: var(--color-text-2);
+}
+
+header {
+    margin: 0.5rem;
+    padding: 1rem;
+    background: var(--color-background-container);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header a {
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.flash-messages {
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    background: #f1f1ac;
+    color: black;    
+} 
+
+.flash-messages p {
+    font-weight: 400;
+}
+
+
+
+
+
+footer {
+    color: rgb(179, 179, 179);
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid #aaa;
+    background: var(--color-background-container);
+}
+
+footer p {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+@media (max-width: 1000px)
+{
+    header {
+        position: fixed;
+        z-index: 5;
+        width: 95%;
+        top: 0;
+        margin: 0;
+    }   
+    header h1 {
+        font-size: 1.5rem;
+    } 
+
+    .flash-messages {
+        margin: 4.5rem 0 0;
+    }
+}

@@ -1,35 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Home - My Flask App{% endblock %}
+{% block title %}PlaylistBridge{% endblock %}
 {% block content %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
 
-<style>    
-    .grid.container {
-        display: flex;
-        justify-content: space-between;
-    }
-    ul {
-        list-style: none;        
-    }
-    li {
-        cursor: pointer;
-        margin: 1rem 0;
-    }
+<div class="menu-mubrne">
+    <button><i class="fa-solid fa-bars"></i></button>
+</div>
 
-</style>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="flash-messages">
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
+<main>
+    <div class="menu-mvqca">
+        <div class="prfle">
+            <ul class="mdltc">
+                <li class="mditc">
+                    <p class="txt-accnt">Garridot</p>
+                </li>
+            </ul>
         </div>
-    {% endif %}
-    {% endwith %}
-    <h1>Welcome to the dashboard!</h1>  
-    <div class="grid container">
-        <div class="sp-box"></div>
-        <div class="yt-box"></div>
+        <div class="lgtou">
+            <a href="/auth/logout">
+                <p>Log out</p>
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
     </div>  
+    <div class="grid container">  
+    </div>  
+</main>
     
-    <script type="module" src="/static/js/home.js"></script>
+<script type="module" src="/static/js/home.js"></script>
 {% endblock %}

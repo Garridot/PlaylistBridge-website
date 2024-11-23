@@ -1,57 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <script>
-        async function handleLogin(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch('/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),                
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {                             
-                window.location.href = "/dashboard";                
-            } else {
-                alert(data.message);
-            }
-        }
-
-        function handleGoogleLogin() {
-            window.location.href = "/auth/google";
-        }
-    </script>
-</head>
-<body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="flash-messages">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+{% extends "base.html" %}
+{% block title %}Login - PlaylistBridge{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+{% block content %}
+<div class="mdctc">
+    <div class="container">
+        <div class="form-auth-container">
+            <h1 class="title-large">Log in into PlaylistBridge</h1>
+            <ul class="sc-gJhJTp">
+                <li class="sc-jcHdAB">
+                    <button class="button-sc-y0gtbx-0"  onclick="handleGoogleLogin()">
+                        <span name="new-google-icon" class="sc-eTdEpr blvHhQ"></span>
+                        <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Continue with Google</span>
+                    </button>
+                </li>
+            </ul>        
+            <form onsubmit="handleLogin(event)">
+                <label for="email">Email</label>
+                <input class="Input-sc-1gbx9xe-0" type="email" id="email" name="email" required>
+                <br>
+                <label for="password">Password</label>
+                <input class="Input-sc-1gbx9xe-0" type="password" id="password" name="password" required>
+                <br>
+                <button class="button-sc-y0gtbx-0" id="auth-button" type="submit">Login</button>
+            </form>
+            <div class="register">
+                <h2>Don't have an account? <a href="/auth/register_page" class="ghuOx">Sign up for PlaylistBridge</a></h2>
             </div>
-        {% endif %}
-    {% endwith %}
-    <button onclick="handleGoogleLogin()">Sing up with Google</button>
-    <br>
-    <form onsubmit="handleLogin(event)">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Login</button>
-    </form>
-    <div class="register">
-        <p>Don't have an account? <a href="/auth/register_page">Sign up for PlaylistBridge</a></p>
-    </div>
-</body>
-</html>
+        </div>
+    </div> 
+</div>
+<script>
+    async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),                
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {                             
+            window.location.href = "/dashboard";                
+        } else {
+            alert(data.message);
+        }
+    }
+
+    function handleGoogleLogin() {
+        window.location.href = "/auth/google";
+    }
+</script>    
+{% endblock %}
