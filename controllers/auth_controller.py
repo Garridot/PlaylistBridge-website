@@ -111,11 +111,13 @@ def google_callback():
         data = response.json() 
         save_profile_data(data)
         # Redirect the user to the home page.
-        return redirect(url_for('dashboard')) 
+        return redirect(url_for('dashboard'))
+    else:
+        flash("Authentication failed. Please try again.")         
+        return redirect(url_for('auth.sign_in_page'))
     
-    return "Authentication failed. Please try again.", 400
 
-@auth_bp.route('/auth/logout', methods=['POST'])
+@auth_bp.route('/auth/logout', methods=['GET'])
 def logout():
     """
     Logs out the user by revoking their access token and clearing the session.
@@ -127,7 +129,7 @@ def logout():
     response = auth.revoke_refresh_token(access_token)
     if response.status_code == 200: 
         session.clear()
-        return jsonify({'message': 'Login successful'}), response.status_code   
+        return redirect(url_for('auth.sign_in_page'))   
 
 def save_profile_data(data):
     """

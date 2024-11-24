@@ -9,8 +9,11 @@ spotify_bp = Blueprint('spotify', __name__)
 @spotify_bp.route('/get_auth_url', methods=['GET'])
 def get_spotify_auth_url(): 
     spotify = SpotifyConnection(get_valid_access_token())  
-    spotify_url = spotify.login()   
-    return jsonify(spotify_url.json())
+    response = spotify.login()     
+    try:        
+        return jsonify({"data": response.json(), "status": response.status_code })
+    except:
+        return jsonify({"error": response["error"]}, {"status": response["status"]}) 
 
 @spotify_bp.route('/callback', methods=['GET'])
 def get_spotify_auth(): 
@@ -25,17 +28,37 @@ def get_spotify_auth():
         # Redirect the user to the home page.
         return redirect(url_for('dashboard')) 
 
-    return jsonify(spotify_url)    
-
 @spotify_bp.route('/playlists', methods=['GET'])
 def get_spotify_playlists(): 
     spotify = SpotifyConnection(get_valid_access_token())   
-    playlists = spotify.get_playlists_list()      
-    return jsonify(playlists.json()) 
+    response = spotify.get_playlists_list()      
+    try:        
+        return jsonify({"data": response.json(), "status": response.status_code })
+    except:
+        return jsonify({"error": response["error"]}, {"status": response["status"]}) 
 
 @spotify_bp.route('/playlists/<playlist_id>', methods=['GET'])
 def get_spotify_tracks(playlist_id): 
     spotify = SpotifyConnection(get_valid_access_token())   
     response = spotify.get_playlist(playlist_id) 
-    return jsonify(response.json()) 
+    try:        
+        return jsonify({"data": response.json(), "status": response.status_code })
+    except:
+        return jsonify({"error": response["error"]}, {"status": response["status"]}) 
         
+@spotify_bp.route('/logout', methods=['GET'])        
+def logout():
+    spotify = SpotifyConnection(get_valid_access_token())   
+    response = spotify.logout() 
+    if response.status_code==200:
+        return redirect(url_for('dashboard')) 
+    
+
+@spotify_bp.route('/user_info', methods=['GET'])        
+def get_user_info():
+    spotify = SpotifyConnection(get_valid_access_token())   
+    response = spotify.user_data()         
+    try:        
+        return jsonify({"data": response.json(), "status": response.status_code })
+    except:        
+        return jsonify({"error": response["error"]}, {"status": response["status"]})       
