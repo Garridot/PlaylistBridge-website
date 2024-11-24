@@ -14,9 +14,9 @@ class YoutubeConnection:
                 headers={"x-access-token": self.access_token},
                 params=params,
                 json=json
-            )
-            response.raise_for_status()  
-            return response.json()
+            )   
+            response.raise_for_status()              
+            return response.json(),response.status_code
         except requests.exceptions.HTTPError as http_err:            
             return {"error": f"HTTP error occurred: {http_err}", "status": response.status_code}
         except Exception as err:
@@ -44,6 +44,16 @@ class YoutubeConnection:
 
     def logout(self):
         return self.request("POST", "auth/logout")
+
+    def user_data(self):
+        """
+        Retrieves details of the user account. 
+
+        Returns:
+        -----------
+        dict: Details of the user account including name, followers, profile picture, etc.
+        """
+        return self.request("GET", "user_data")       
 
     def get_playlists_list(self):
         """

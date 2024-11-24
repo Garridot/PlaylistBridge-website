@@ -17,8 +17,7 @@ class SpotifyConnection:
             )
             response.raise_for_status()  # Verifica que no haya errores HTTP
             return response
-        except requests.exceptions.HTTPError as http_err:
-            print(http_err, response.status_code, response.content)
+        except requests.exceptions.HTTPError as http_err:           
             return {"error": f"HTTP error occurred: {http_err}", "status": response.status_code}
         except Exception as err:
             return {"error": f"Other error occurred: {err}"}
@@ -33,6 +32,16 @@ class SpotifyConnection:
         """
         return self.request("GET", "auth/login")
 
+    def logout(self):
+        """
+        Generates the Spotify login URL where the user needs to authenticate.
+        
+        Returns:
+        --------
+        JSON response containing the Spotify authorization URL.
+        """
+        return self.request("POST", "auth/logout")    
+
     def exchange_for_token(self, code):
         """
         Requests to the API to authenticate a user using Spotify authentication.    
@@ -43,8 +52,15 @@ class SpotifyConnection:
         """
         return self.request("GET", "auth/callback", params={"code": code})
 
-    def logout(self):
-        return self.request("POST", "auth/logout")
+    def user_data(self):
+        """
+        Retrieves details of the user account.      
+
+        Returns:
+        -----------
+        dict: Details of the user account including name, followers, profile picture, etc.
+        """
+        return self.request("GET", "/user_data")
 
     def get_playlists_list(self):
         """
