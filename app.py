@@ -34,6 +34,9 @@ def create_app():
         # ignore authentication routes.
         if request.endpoint is not None and 'auth' in request.endpoint:  
             return
+
+        # Allow unverified access to static files
+        if request.path.startswith('/static'):  return None 
         
         # Check if the user has a valid access token
         if not get_valid_access_token():
@@ -48,7 +51,15 @@ def create_app():
 
     @app.route('/dashboard')
     def dashboard():       
-        return render_template("dashboard.html")              
+        return render_template("dashboard.html") 
+
+    @app.route('/dashboard/playlist/youtube/<playlist_id>')
+    def dashboard_yt_playlist(playlist_id):       
+        return render_template("dashboard.html")
+
+    @app.route('/dashboard/playlist/spotify/<playlist_id>')
+    def dashboard_sp_playlist(playlist_id):       
+        return render_template("dashboard.html")                      
     
     return app
 
