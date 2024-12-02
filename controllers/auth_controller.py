@@ -113,7 +113,7 @@ def google_callback():
         # Redirect the user to the home page.
         return redirect(url_for('dashboard'))
     else:
-        flash("Authentication failed. Please try again.")         
+        flash("Authentication has failed. Please try again later, or attempt to log in manually.")         
         return redirect(url_for('auth.sign_in_page'))
     
 

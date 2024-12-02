@@ -28,7 +28,7 @@ def get_youtube_auth():
         # Redirect the user to the home page.
         return redirect(url_for('dashboard')) 
 
-@youtube_bp.route('/get_playlists', methods=['GET'])
+@youtube_bp.route('/playlists', methods=['GET'])
 def get_youtube_playlists(): 
     youtube = YoutubeConnection(get_valid_access_token())   
     response = youtube.get_playlists_list()  
@@ -38,9 +38,18 @@ def get_youtube_playlists():
         return jsonify({"error": response["error"]}, {"status": response["status"]})     
 
 @youtube_bp.route('/playlists/<playlist_id>', methods=['GET'])
-def get_youtube_tracks(playlist_id): 
+def get_youtube_playlist(playlist_id): 
     youtube = YoutubeConnection(get_valid_access_token())   
     response = youtube.get_playlist(playlist_id)
+    try:
+        return jsonify({"data": response[0], "status": response[1] })
+    except:
+        return jsonify({"error": response["error"]}, {"status": response["status"]})      
+
+@youtube_bp.route('/playlists/<playlist_id>/tracks', methods=['GET'])
+def get_youtube_playlist_tracks(playlist_id): 
+    youtube = YoutubeConnection(get_valid_access_token())   
+    response = youtube.get_playlist_tracks(playlist_id)
     try:
         return jsonify({"data": response[0], "status": response[1] })
     except:

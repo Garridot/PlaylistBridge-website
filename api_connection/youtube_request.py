@@ -77,7 +77,21 @@ class YoutubeConnection:
         -----------
         dict: Details of the playlist including name, description, and tracks.       
         """
-        return self.request("GET", f"playlists/{playlist_id}")            
+        return self.request("GET", f"playlists/{playlist_id}")    
+
+    def get_playlist_tracks(self, playlist_id):
+        """
+        Retrieves traccks of a specific playlist by its ID.
+
+        Parameters:
+        -----------        
+        playlist_id (str): The ID of the playlist to retrieve.
+
+        Returns:
+        -----------
+        dict: Details of the playlist including name, description, and tracks.       
+        """
+        return self.request("GET", f"playlists/{playlist_id}/tracks")                
 
 
 
