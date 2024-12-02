@@ -2,7 +2,7 @@ import {
     renderAuthYoutube,
     renderAuthSpotify, 
     renderSpotifyPlaylists, renderSpotifyTracks,
-    renderYoutubePlaylists, renderYoutubeTracks, 
+    renderYoutubePlaylists, renderYoutubePlaylistData, renderYoutubeTracks,
     renderLoadAnimation,
 } from './render.js' 
 
@@ -69,26 +69,10 @@ export async function YoutubeLogin() {
     }
 }
 /**
- * Fetches tracks from a specific YouTube playlist and renders them.
- * @param {string} playlist - The playlist ID.
- */
-export async function YoutubeTracks(playlist) {    
-    renderLoadAnimation();
-
-    history.pushState({ playlist }, null, `/dashboard/playlist/youtube/${playlist}`);
-    const data = await fetchData(`/youtube/playlists/${playlist}`, `youtube_playlist_${playlist}`);
-
-    if (data["status"] == 200) {
-        renderYoutubeTracks(data["data"])
-    } else {
-        console.error(`Error fetching tracks for playlist ${playlist}.`);
-    }
-}
-/**
  * Fetches the user's YouTube playlists and renders them.
  */
 export async function YoutubePlaylists() {
-    const data = await fetchData('http://localhost:8000/youtube/get_playlists', 'youtube_playlists', true, "GET");
+    const data = await fetchData('/youtube/playlists', 'youtube_playlists', true, "GET");
 
 
     if (data["status"] == 200) {
@@ -96,6 +80,26 @@ export async function YoutubePlaylists() {
     } else {
         console.info("No playlists found or error fetching playlists.");
         await YoutubeLogin();
+    }
+}
+/**
+ * Fetches tracks from a specific YouTube playlist and renders them.
+ * @param {string} playlist - The playlist ID.
+ */
+export async function YoutubeTracks(playlist) {    
+    renderLoadAnimation();
+
+    history.pushState({ playlist }, null, `/dashboard/playlist/youtube/${playlist}`);
+    const dataPlaylist = await fetchData(`/youtube/playlists/${playlist}`, `youtube_playlist_${playlist}`);
+    const dataTracks = await fetchData(`/youtube/playlists/${playlist}/tracks`, `youtube_playlist_${playlist}_tracks`);
+
+    if (dataPlaylist["status"] == 200) {
+        renderYoutubePlaylistData(dataPlaylist["data"]);
+        
+    } if (dataTracks["status"] == 200) {
+        renderYoutubeTracks(dataTracks["data"])
+    }  else {
+        console.error(`Error fetching tracks for playlist ${playlist}.`);
     }
 }
 

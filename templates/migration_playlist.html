@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}PlaylistBridge{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/migration_playlist.css') }}">
+{% block styles %}
+{% endblock %}
+<main>
+    <section class="container">
+        <div class="container-vignette">
+            <h1 class="ctitl"></h1>
+        </div>
+        <div class="container-vignette">
+            <div class="loader"></div>
+        </div>
+        <div class="container-vignette">
+            <h4 class="ctrk">Searching <span></span> on YouTube...</h4>            
+        </div>
+        <div class="container-vignette">
+            <p class="txtad">Please stay on this page until the process is complete.</p>
+        </div>
+    </section>
+</main>
+<script type="module" src="/static/js/migration_playlist.js"></script>
+{% endblock %}

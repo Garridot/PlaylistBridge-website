@@ -14,7 +14,7 @@ export function renderLoadAnimation() {
 /**
  * Clears the content of the grid container.
  */
-function clearContent() {
+export function clearContent() {
     var container = document.querySelector('.grid.container');
     container.innerHTML = "";
 }
@@ -196,9 +196,9 @@ export async function renderSpotifyTracks(data) {
             <span class="sibti" id="duhs"><p></p></span>
             </div>
             <div class="migrplay">
-                <button>
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                </button>
+                <form action="/migration/spotify-to-youtube/${data.id}" method="post">
+                    <button type="submit"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+                </form>                
             </div>
             <div class="trksas">
             </div>
@@ -235,8 +235,7 @@ export async function renderSpotifyTracks(data) {
 
     document.querySelector(".trksas").appendChild(ul); 
 
-    document.querySelector("#duhs p").innerHTML = new Date(playlistDuration).toISOString().slice(11,19) + "min";      
-
+    document.querySelector("#duhs p").innerHTML = new Date(playlistDuration).toISOString().slice(11,19) + "min";         
 }  
 
 
@@ -273,7 +272,7 @@ export async function renderLogoutYoutube () {
         window.location.href = '/youtube/logout';
     })
 } 
-export function renderYoutubePlaylists (data) {      
+export function renderYoutubePlaylists (data) { 
 
     var ytBox = document.createElement("div");
     ytBox.className = "yt-box";
@@ -286,7 +285,7 @@ export function renderYoutubePlaylists (data) {
     data.forEach(item => {                  
         const li = document.createElement("li");
         li.id = item.id;     
-        var image = item.snippet.thumbnails.standard;        
+        var image = item.snippet.thumbnails.medium;        
         li.innerHTML = `
         <a href="/playlist/youtube/${item.id}" data-playlist="${item.id}" class="playlist-link">
             <div class="playlist-picture">                    
@@ -312,18 +311,16 @@ export function renderYoutubePlaylists (data) {
     })
  
 }  
-export async function renderYoutubeTracks(data) {  
-    
+export async function renderYoutubePlaylistData(data) {  
     clearContent();
 
     var userData = JSON.parse(localStorage.getItem("youtube_user_info"))["data"];
-
     var userImage = userData.snippet.thumbnails.default.url;    
     
-    var playlistImage = data.playlist[0].snippet.thumbnails.medium.url;
-    var playlistDescription = data.playlist[0].snippet.description;
-    var playlistName = data.playlist[0].snippet.title; 
-    var playlistOwner = data.playlist[0].snippet.channelTitle; 
+    var playlistImage = data.items[0].snippet.thumbnails.medium.url;
+    var playlistDescription = data.items[0].snippet.description;
+    var playlistName = data.items[0].snippet.title; 
+    var playlistOwner = data.items[0].snippet.channelTitle; 
 
     document.querySelector(".grid.container").innerHTML = `
         <section class="pltexc">
@@ -341,17 +338,20 @@ export async function renderYoutubeTracks(data) {
             <span class="sibti"><img src="${userImage}" alt="${playlistOwner}" width=50 height=50></span>
             <span class="sibti"><p>${playlistOwner}</p></span>
             </div>
-            <div class="migrplay">
-                <button>
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                </button>
+            <div class="migrplay">  
+                <form action="/migration/youtube-to-spotify/${data.items[0].id}" method="post">
+                    <button type="submit"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+                </form>     
             </div>
             <div class="trksas">
             </div>
         </section>    
-        `;
+    `;  
 
-    var tracks = data.tracks;
+    return true
+} 
+export async function renderYoutubeTracks(data) {
+    var tracks = data;
 
     var ul = document.createElement("ul");    
 
@@ -377,8 +377,7 @@ export async function renderYoutubeTracks(data) {
     }); 
 
     document.querySelector(".trksas").appendChild(ul); 
-
-} 
+}
 
 
    
