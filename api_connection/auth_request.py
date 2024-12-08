@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 class AuthConnection:
     """
@@ -7,7 +8,7 @@ class AuthConnection:
     Each function sends requests to the PlaylistBridge API to handle user registration, login, and token management for third-party authentication providers.
     """
     def __init__(self):
-        self.root_url  = "http://127.0.0.1:5000/auth"        
+        self.root_url = os.getenv("API_URL","http://127.0.0.1:5000") + "/auth"        
 
     def register_user(self, data_user):  
         """

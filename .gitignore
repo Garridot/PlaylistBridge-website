@@ -5,11 +5,14 @@ venv/
 __pycache__/
 *.pyc
 
-.pytest_cache/
+# Pythest Cache
+.pythest_cache/
 
 # Logs and databases
 *.log
 *.sqlite3
+*.log.1
+*.log.10
 
 # Environment variables
 .env

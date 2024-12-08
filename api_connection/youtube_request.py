@@ -1,9 +1,10 @@
 import requests
 import json
+import os
 
 class YoutubeConnection:
     def __init__(self, access_token):
-        self.root_url = "http://127.0.0.1:5000/youtube"
+        self.root_url = os.getenv("API_URL","http://127.0.0.1:5000") + "/youtube"
         self.access_token = access_token
 
     def request(self, method, endpoint, params=None, json=None):

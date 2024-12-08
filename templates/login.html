@@ -10,7 +10,7 @@
             <h1 class="title-large">Log in into PlaylistBridge</h1>
             <ul class="sc-gJhJTp">
                 <li class="sc-jcHdAB">
-                    <button class="button-sc-y0gtbx-0"  onclick="handleGoogleLogin()">
+                    <button class="button-sc-y0gtbx-0" id="googlelogin">
                         <span name="new-google-icon" class="sc-eTdEpr blvHhQ"></span>
                         <span class="encore-text encore-text-body-medium-bold sc-iKTcqh sc-tOkKi sc-eJgwjL doOTMr ifVOsT gLIwsz" data-encore-id="text">Continue with Google</span>
                     </button>
@@ -31,30 +31,5 @@
         </div>
     </div> 
 </div>
-<script>
-    async function handleLogin(event) {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        const response = await fetch('/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),                
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {                             
-            window.location.href = "/dashboard";                
-        } else {
-            alert(data.message);
-        }
-    }
-
-    function handleGoogleLogin() {
-        window.location.href = "/auth/google";
-    }
-</script>    
+<script src="/static/js/login.js"></script>
 {% endblock %}

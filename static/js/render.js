@@ -99,6 +99,9 @@ export async function renderUserPlaylists(spotifyAuth, YouTubeAuth) {
 
 
 export async function renderAuthSpotify (data) {
+    const spotifyIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"/></svg>
+    `;
     var spBox = document.createElement("div");
     spBox.className = "sp-box";
     spBox.innerHTML =  `
@@ -107,18 +110,21 @@ export async function renderAuthSpotify (data) {
         <p>To access your Spotify playlists, please connect to your Spotify account.</p>
         <a href="${data.auth_url}" class="sp-auth-url">
             <p>Connect to Spotify</p>
-            <i class="fa-brands fa-spotify"></i>
+            ${spotifyIconSVG}
         </a>
     </div> `;
     document.querySelector(".grid.container").appendChild(spBox);
 }   
 export async function renderLogoutSpotify () {
+    const spotifyIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"/></svg>
+    `;
     var li = document.createElement("li");
     li.className = "mditc";
     li.innerHTML = `    
         <a href="/spotify/logout" id="auth-spotify">
             <p>Disconnect to Spotify</p>
-            <i class="fa-brands fa-spotify"></i>
+            ${spotifyIconSVG}
         </a>
     `;    
     document.querySelector("ul.mdltc").appendChild(li);   
@@ -169,6 +175,10 @@ export async function renderSpotifyPlaylists (data) {
 export async function renderSpotifyTracks(data) { 
     clearContent();
 
+    const migrateIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z"/></svg>
+    `;
+
     var userData = JSON.parse(localStorage.getItem("spotify_user_info"))["data"];    
     var userImage = userData.images[1].url;
 
@@ -197,7 +207,7 @@ export async function renderSpotifyTracks(data) {
             </div>
             <div class="migrplay">
                 <form action="/migration/spotify-to-youtube/${data.id}" method="post">
-                    <button type="submit"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+                    <button type="submit">${migrateIconSVG}</button>
                 </form>                
             </div>
             <div class="trksas">
@@ -239,7 +249,10 @@ export async function renderSpotifyTracks(data) {
 }  
 
 
-export async function renderAuthYoutube (data) {
+export async function renderAuthYoutube (data) {    
+    const youtubeIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"/></svg>
+    `;
 
     var ytBox = document.createElement("div");
     ytBox.className = "yt-box";
@@ -249,20 +262,23 @@ export async function renderAuthYoutube (data) {
         <p>To access your Youtube playlists, please connect to your Youtube account.</p>
         <a href="${data.auth_url}" class="yt-auth-url">
             <p>Connect to Youtube</p>
-            <i class="fa-brands fa-youtube"></i>
+            ${youtubeIconSVG}
         </a>
     </div> `;
 
     document.querySelector(".grid.container").appendChild(ytBox);
 } 
 export async function renderLogoutYoutube () {
+    const youtubeIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"/></svg>
+    `;
 
     var li = document.createElement("li");
     li.className = "mditc";
     li.innerHTML = `    
         <a href="/youtube/logout" id="auth-youtube">
             <p>Disconnect to Youtube</p>
-            <i class="fa-brands fa-youtube"></i>
+            ${youtubeIconSVG}
         </a>
     `;
     document.querySelector("ul.mdltc").appendChild(li);
@@ -314,6 +330,10 @@ export function renderYoutubePlaylists (data) {
 export async function renderYoutubePlaylistData(data) {  
     clearContent();
 
+    const migrateIconSVG = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z"/></svg>
+    `;
+
     var userData = JSON.parse(localStorage.getItem("youtube_user_info"))["data"];
     var userImage = userData.snippet.thumbnails.default.url;    
     
@@ -340,7 +360,9 @@ export async function renderYoutubePlaylistData(data) {
             </div>
             <div class="migrplay">  
                 <form action="/migration/youtube-to-spotify/${data.items[0].id}" method="post">
-                    <button type="submit"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+                    <button type="submit">
+                        ${migrateIconSVG}
+                    </button>
                 </form>     
             </div>
             <div class="trksas">

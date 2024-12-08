@@ -24,7 +24,12 @@
     width: 100%;
     font-size: 1.1rem;
     cursor: pointer;
-
+}
+.menu-mubrne svg {
+    width: 1rem;
+    display: block;
+    fill: #ffffff;
+    transition: all .2s;
 }
 
 main {
@@ -73,13 +78,19 @@ li.mditc {
     transition: all .2s;
 }
 
-a#auth-spotify:hover {
-    color: #1ed75f;
-    /* border-bottom: 1px solid; */
+svg {
+    width: 1rem;
+    fill: #ffffff;
+    transition: all .2s;
 }
-a#auth-youtube:hover {
-    color: #ff0033;  
-    /* border-bottom: 1px solid;   */
+
+a#auth-spotify:hover, a#auth-spotify:hover svg {
+    color: #1ed75f;
+    fill: #1ed75f;
+}
+a#auth-youtube:hover, a#auth-youtube:hover svg{
+    color: #ff0033; 
+    fill: #ff0033;
 }
 .lgtou {
     margin-bottom: 2rem;
@@ -87,9 +98,9 @@ a#auth-youtube:hover {
     width: 85%;
 }
 
-.lgtou a:hover {
-    color: var(--color-text-2);  
-    /* border-bottom: 1px solid;   */
+.lgtou a:hover, .lgtou a:hover svg {
+    color: var(--color-text-2); 
+    fill: var(--color-text-2);
 }   
 
 
@@ -236,8 +247,10 @@ span.sibti#duhs {
     border-radius: 50%;
     cursor: pointer;
 }
-.migrplay button i {
-    font-weight: 600;
+.migrplay button svg {
+    width: 1.5rem;
+    fill: #ffffff;
+    display: block;
 }
 
 .trksas ul {

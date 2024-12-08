@@ -15,7 +15,7 @@ def get_spotify_auth_url():
     except:
         return jsonify({"error": response["error"]}, {"status": response["status"]}) 
 
-@spotify_bp.route('/callback', methods=['GET'])
+@spotify_bp.route('/auth/callback', methods=['GET'])
 def get_spotify_auth(): 
     spotify = SpotifyConnection(get_valid_access_token())  
     # Capture URL parameters.

@@ -15,7 +15,7 @@ def get_youtube_auth_url():
     except:
         return jsonify({"error": response["error"]}, {"status": response["status"]})     
 
-@youtube_bp.route('/callback', methods=['GET'])
+@youtube_bp.route('/auth/callback', methods=['GET'])
 def get_youtube_auth(): 
     youtube = YoutubeConnection(get_valid_access_token())  
     # Capture URL parameters.
